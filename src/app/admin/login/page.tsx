@@ -41,7 +41,7 @@ export default function AdminLoginPage() {
         className="w-full max-w-sm border border-ink p-8 flex flex-col gap-5"
       >
         <h1 className="font-display font-extrabold text-2xl text-center mb-2">
-          لوحة تحكم <span className="text-clay">حلب خان</span>
+          لوحة تحكم <span className="text-clay">خان حلب</span>
         </h1>
         <label className="flex flex-col gap-2">
           <span className="font-bold text-sm">اسم المستخدم</span>

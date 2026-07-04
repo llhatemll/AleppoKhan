@@ -90,7 +90,11 @@ export async function POST(req: NextRequest) {
     address: order.address,
     notes: order.notes,
     total: order.total,
-    itemCount: orderItemsData.reduce((s, i) => s + i.quantity, 0),
+    items: orderItemsData.map((i) => ({
+      title: products.find((p) => p.id === i.productId)?.title ?? i.productId,
+      quantity: i.quantity,
+      price: i.price,
+    })),
   });
 
   return NextResponse.json({ id: order.id, total: order.total });

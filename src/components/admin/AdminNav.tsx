@@ -25,7 +25,7 @@ export default function AdminNav({ username }: { username: string }) {
     <aside className="w-56 shrink-0 border-l border-ink hidden sm:flex flex-col">
       <div className="p-5 border-b border-ink">
         <h2 className="font-display font-extrabold text-lg">
-          حلب <span className="text-clay">خان</span>
+          خان <span className="text-clay">حلب</span>
         </h2>
         <p className="text-xs text-ink/50 mt-1">{username}</p>
       </div>

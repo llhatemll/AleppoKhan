@@ -19,7 +19,7 @@ export default function Header() {
 
         {/* Logo */}
         <Link href="/" className="font-display font-bold text-2xl sm:text-3xl tracking-tight" style={{ color: "var(--fg)" }}>
-          حلب خان
+          خان حلب
         </Link>
 
         {/* Desktop nav — centred */}

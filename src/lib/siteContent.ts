@@ -15,7 +15,7 @@ export type ContentKey =
 const DEFAULTS: Record<ContentKey, string> = {
   announce_enabled: "true",
   announce_text: "🌿 الشحن مجاني لجميع محافظات العراق عند الطلب",
-  hero_title: "جمال طبيعي\nمن حلب خان",
+  hero_title: "جمال طبيعي\nمن خان حلب",
   hero_subtitle: "صابون وشامبو وزيوت طبيعية فاخرة، مصنوعة بعناية من أجود المكونات. الدفع عند الاستلام.",
   hero_btn_text: "تسوق الآن",
   hero_image: "",

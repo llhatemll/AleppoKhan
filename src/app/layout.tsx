@@ -4,7 +4,7 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
-  title: "حلب خان | منتجات طبيعية فاخرة",
+  title: "خان حلب | منتجات طبيعية فاخرة",
   description: "صابون وشامبو وزيوت طبيعية فاخرة. الدفع عند الاستلام في جميع محافظات العراق.",
 };
 

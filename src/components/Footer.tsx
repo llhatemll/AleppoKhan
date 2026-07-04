@@ -35,7 +35,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="py-4 text-center text-xs" style={{ borderTop: "1px solid var(--border)", color: "var(--fg-faint)" }}>
-        © {new Date().getFullYear()} حلب خان. جميع الحقوق محفوظة.
+        © {new Date().getFullYear()} خان حلب. جميع الحقوق محفوظة.
       </div>
     </footer>
   );

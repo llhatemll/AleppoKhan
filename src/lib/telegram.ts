@@ -1,5 +1,11 @@
 import { formatIQD } from "./constants";
 
+interface OrderItem {
+  title: string;
+  quantity: number;
+  price: number;
+}
+
 interface OrderNotificationData {
   id: string;
   fullName: string;
@@ -8,16 +14,22 @@ interface OrderNotificationData {
   address: string;
   notes?: string | null;
   total: number;
-  itemCount: number;
+  items: OrderItem[];
 }
 
 export async function sendOrderNotification(order: OrderNotificationData) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;
 
-  if (!token || !chatId) return; // silently skip if not configured
+  if (!token || !chatId) return;
 
   const orderNum = order.id.slice(-8).toUpperCase();
+  const siteUrl = "https://www.aleppokhan.com";
+
+  const itemLines = order.items.map(
+    (item) => `  • ${item.title} × ${item.quantity} — ${formatIQD(item.price * item.quantity)}`
+  );
+
   const text = [
     `🛒 *طلب جديد #${orderNum}*`,
     ``,
@@ -27,12 +39,14 @@ export async function sendOrderNotification(order: OrderNotificationData) {
     `🏠 *العنوان:* ${order.address}`,
     order.notes ? `📝 *ملاحظات:* ${order.notes}` : null,
     ``,
-    `📦 *عدد المنتجات:* ${order.itemCount}`,
+    `📦 *المنتجات:*`,
+    ...itemLines,
+    ``,
     `💰 *الإجمالي:* ${formatIQD(order.total)}`,
     ``,
-    `🔗 رابط الطلب: /admin/orders/${order.id}`,
+    `🔗 [فتح الطلب في لوحة التحكم](${siteUrl}/admin/orders/${order.id})`,
   ]
-    .filter(Boolean)
+    .filter((l) => l !== null)
     .join("\n");
 
   try {
