@@ -45,10 +45,7 @@ export default function CheckoutPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (items.length === 0) {
-      toast.error("سلتك فارغة");
-      return;
-    }
+    if (items.length === 0) { toast.error("سلتك فارغة"); return; }
     if (!validate()) return;
 
     setSubmitting(true);
@@ -77,26 +74,31 @@ export default function CheckoutPage() {
     }
   }
 
+  /* ── Success screen ── */
   if (orderId) {
     return (
       <div className="max-w-xl mx-auto px-4 py-24 text-center">
-        <div className="w-20 h-20 rounded-full bg-forest text-paper flex items-center justify-center mx-auto mb-6 text-3xl">
+        <div className="w-20 h-20 flex items-center justify-center mx-auto mb-6 text-3xl font-bold"
+          style={{ background: "var(--fg)", color: "var(--bg)", borderRadius: "50%" }}>
           ✓
         </div>
-        <h1 className="font-display font-extrabold text-3xl mb-3">تم استلام طلبك بنجاح!</h1>
-        <p className="text-ink/70 mb-6 leading-relaxed">
-          رقم طلبك هو <span className="font-bold text-clay">#{orderId.slice(-8).toUpperCase()}</span>
+        <h1 className="font-display font-bold text-3xl mb-3" style={{ color: "var(--fg)" }}>
+          تم استلام طلبك بنجاح!
+        </h1>
+        <p className="mb-6 leading-relaxed" style={{ color: "var(--fg-muted)" }}>
+          رقم طلبك هو{" "}
+          <span className="font-bold" style={{ color: "var(--accent2)" }}>
+            #{orderId.slice(-8).toUpperCase()}
+          </span>
           <br />
           سيتم التواصل معك قريباً لتأكيد التوصيل. الدفع سيكون عند الاستلام.
         </p>
-        <div className="border border-ink p-4 inline-block mb-8 font-bold">
-          إجمالي الطلب: <span className="text-clay">{formatIQD(orderTotal)}</span>
+        <div className="inline-block p-4 mb-8 font-bold" style={{ border: "1px solid var(--border)" }}>
+          إجمالي الطلب:{" "}
+          <span style={{ color: "var(--accent2)" }}>{formatIQD(orderTotal)}</span>
         </div>
         <div>
-          <button
-            onClick={() => router.push("/")}
-            className="bg-ink text-paper font-bold px-8 py-3 hover:bg-clay transition-colors"
-          >
+          <button onClick={() => router.push("/")} className="btn-primary px-8 py-3">
             العودة للرئيسية
           </button>
         </div>
@@ -104,16 +106,21 @@ export default function CheckoutPage() {
     );
   }
 
+  /* ── Checkout form ── */
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
-      <h1 className="font-display font-extrabold text-3xl mb-8 border-b border-ink pb-4">
+    <div className="max-w-4xl mx-auto px-4 sm:px-8 py-10">
+      <h1 className="font-display font-bold text-3xl mb-8 pb-4"
+        style={{ color: "var(--fg)", borderBottom: "1px solid var(--border)" }}>
         إتمام الطلب
       </h1>
 
       {items.length === 0 ? (
-        <p className="text-ink/50 py-20 text-center">سلتك فارغة، أضف منتجات أولاً</p>
+        <p className="py-20 text-center" style={{ color: "var(--fg-muted)" }}>
+          سلتك فارغة، أضف منتجات أولاً
+        </p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          {/* Form */}
           <form onSubmit={handleSubmit} className="md:col-span-2 flex flex-col gap-5">
             <InputField
               label="الاسم الكامل"
@@ -143,9 +150,7 @@ export default function CheckoutPage() {
             >
               <option value="">اختر المحافظة</option>
               {GOVERNORATES.map((g) => (
-                <option key={g} value={g}>
-                  {g}
-                </option>
+                <option key={g} value={g}>{g}</option>
               ))}
             </InputField>
             <InputField
@@ -169,36 +174,41 @@ export default function CheckoutPage() {
             <button
               type="submit"
               disabled={submitting}
-              className="bg-ink text-paper font-bold py-4 hover:bg-clay transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+              className="btn-primary w-full py-4 flex items-center justify-center gap-2 text-base"
             >
               {submitting ? (
                 <>
-                  <span className="w-4 h-4 border-2 border-paper border-t-transparent rounded-full animate-spin" />
+                  <span className="w-4 h-4 border-2 border-t-transparent rounded-full animate-spin"
+                    style={{ borderColor: "var(--accent-fg)", borderTopColor: "transparent" }} />
                   جاري إرسال الطلب...
                 </>
               ) : (
-                "تأكيد الطلب (الدفع عند الاستلام)"
+                "تأكيد الطلب — الدفع عند الاستلام"
               )}
             </button>
           </form>
 
-          <div className="border border-ink p-5 h-fit flex flex-col gap-4">
-            <h2 className="font-display font-bold text-lg border-b border-ink pb-3">
+          {/* Order summary */}
+          <div className="p-5 h-fit flex flex-col gap-4"
+            style={{ border: "1px solid var(--border)", background: "var(--bg-card)" }}>
+            <h2 className="font-display font-bold text-lg pb-3"
+              style={{ color: "var(--fg)", borderBottom: "1px solid var(--border)" }}>
               ملخص الطلب
             </h2>
             {items.map((item) => (
-              <div key={item.productId} className="flex justify-between text-sm">
-                <span>
-                  {item.title} × {item.quantity}
+              <div key={item.productId} className="flex justify-between text-sm gap-2">
+                <span style={{ color: "var(--fg)" }}>{item.title} × {item.quantity}</span>
+                <span className="font-bold shrink-0" style={{ color: "var(--fg)" }}>
+                  {formatIQD(item.price * item.quantity)}
                 </span>
-                <span className="font-bold">{formatIQD(item.price * item.quantity)}</span>
               </div>
             ))}
-            <div className="flex justify-between font-display font-bold text-lg border-t border-ink pt-3">
+            <div className="flex justify-between font-bold text-lg pt-3"
+              style={{ borderTop: "1px solid var(--border)", color: "var(--fg)" }}>
               <span>الإجمالي</span>
-              <span className="text-clay">{formatIQD(totalPrice())}</span>
+              <span style={{ color: "var(--accent2)" }}>{formatIQD(totalPrice())}</span>
             </div>
-            <p className="text-xs text-ink/50">الدفع نقداً عند استلام الطلب</p>
+            <p className="text-xs" style={{ color: "var(--fg-faint)" }}>الدفع نقداً عند استلام الطلب</p>
           </div>
         </div>
       )}

@@ -13,10 +13,13 @@
 .env.local
 .env.*.local
 
+# uploaded product images (stored locally)
+/public/uploads/*
+!/public/uploads/.gitkeep
+
 # database files
 /prisma/*.db
 /prisma/*.db-journal
-/prisma/migrations/
 
 # misc
 .DS_Store

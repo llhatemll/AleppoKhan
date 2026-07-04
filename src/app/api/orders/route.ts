@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { GOVERNORATES } from "@/lib/constants";
+import { sendOrderNotification } from "@/lib/telegram";
 
 const IRAQI_PHONE_REGEX = /^(?:\+?964|0)?7\d{9}$/;
 
@@ -78,6 +79,18 @@ export async function POST(req: NextRequest) {
     }
 
     return created;
+  });
+
+  // fire-and-forget Telegram notification
+  sendOrderNotification({
+    id: order.id,
+    fullName: order.fullName,
+    phone: order.phone,
+    governorate: order.governorate,
+    address: order.address,
+    notes: order.notes,
+    total: order.total,
+    itemCount: orderItemsData.reduce((s, i) => s + i.quantity, 0),
   });
 
   return NextResponse.json({ id: order.id, total: order.total });

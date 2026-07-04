@@ -5,7 +5,9 @@ import { usePathname, useRouter } from "next/navigation";
 
 const links = [
   { href: "/admin", label: "نظرة عامة" },
+  { href: "/admin/content", label: "محتوى الموقع" },
   { href: "/admin/products", label: "المنتجات" },
+  { href: "/admin/collections", label: "الكولكشنات" },
   { href: "/admin/orders", label: "الطلبات" },
 ];
 
