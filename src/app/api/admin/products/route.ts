@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
   if (!requireAdmin(req)) return NextResponse.json({ error: "غير مصرح" }, { status: 401 });
 
   const body = await req.json();
-  const { title, description, price, category, stock, imageUrl } = body;
+  const { title, description, price, category, stock, imageUrl, images, deliveryFee, featured, soldOut } = body;
 
   if (!title || !description || !category || !imageUrl) {
     return NextResponse.json({ error: "جميع الحقول مطلوبة" }, { status: 400 });
@@ -23,12 +23,13 @@ export async function POST(req: NextRequest) {
 
   const product = await prisma.product.create({
     data: {
-      title,
-      description,
-      price: Math.round(price),
-      category,
+      title, description, price: Math.round(price), category,
       stock: Math.max(0, Math.round(stock ?? 0)),
       imageUrl,
+      images: Array.isArray(images) ? images : [],
+      deliveryFee: typeof deliveryFee === "number" ? deliveryFee : 0,
+      featured: featured === true,
+      soldOut: soldOut === true,
     },
   });
 

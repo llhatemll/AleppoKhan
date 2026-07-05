@@ -8,22 +8,24 @@ type InputFieldProps = {
   | ({ as: "select"; children: React.ReactNode } & React.SelectHTMLAttributes<HTMLSelectElement>)
 );
 
-const inputStyle = {
-  background: "var(--bg)",
-  color: "var(--fg)",
-  border: "1px solid var(--border)",
-  borderRadius: "12px",
-  padding: "12px 16px",
-  width: "100%",
-  outline: "none",
-  fontFamily: "var(--font-cairo)",
-};
-
 export default function InputField({ label, error, required, as = "input", ...rest }: InputFieldProps) {
+  const inputStyle: React.CSSProperties = {
+    background: "var(--bg)",
+    color: "var(--fg)",
+    border: `1.5px solid ${error ? "#ef4444" : "var(--border)"}`,
+    borderRadius: "8px",
+    padding: "12px 16px",
+    width: "100%",
+    outline: "none",
+    fontFamily: "inherit",
+    transition: "border-color 0.15s",
+    boxShadow: error ? "0 0 0 3px rgba(239,68,68,0.1)" : "none",
+  };
+
   return (
-    <label className="flex flex-col gap-2">
+    <label className="flex flex-col gap-1.5">
       <span className="font-bold text-sm" style={{ color: "var(--fg)" }}>
-        {label} {required && <span style={{ color: "var(--accent)" }}>*</span>}
+        {label} {required && <span style={{ color: "#ef4444" }}>*</span>}
       </span>
       {as === "textarea" ? (
         <textarea style={inputStyle} {...(rest as React.TextareaHTMLAttributes<HTMLTextAreaElement>)} />
@@ -34,7 +36,11 @@ export default function InputField({ label, error, required, as = "input", ...re
       ) : (
         <input style={inputStyle} {...(rest as React.InputHTMLAttributes<HTMLInputElement>)} />
       )}
-      {error && <span className="text-xs font-bold" style={{ color: "var(--accent)" }}>{error}</span>}
+      {error && (
+        <span className="text-xs font-bold flex items-center gap-1" style={{ color: "#ef4444" }}>
+          ⚠ {error}
+        </span>
+      )}
     </label>
   );
 }

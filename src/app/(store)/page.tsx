@@ -9,10 +9,12 @@ import type { Product } from "@/types";
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [products, content] = await Promise.all([
-    prisma.product.findMany({ orderBy: { createdAt: "desc" }, take: 8 }),
+  const [featuredProducts, allProducts, content] = await Promise.all([
+    prisma.product.findMany({ where: { featured: true, soldOut: false }, orderBy: { createdAt: "desc" } }),
+    prisma.product.findMany({ where: { soldOut: false }, orderBy: { createdAt: "desc" }, take: 8 }),
     getContent(),
   ]);
+  const products = featuredProducts.length > 0 ? featuredProducts : allProducts;
 
   const heroLines = content.hero_title.split("\n");
 
@@ -73,7 +75,7 @@ export default async function HomePage() {
       {/* ─── CATEGORY BANNERS ─── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-8 py-12 sm:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {CATEGORIES.map((c) => {
+          {CATEGORIES.filter((c) => catImages[c.value]).map((c) => {
             const img = catImages[c.value];
             return (
               <Link key={c.slug} href={`/category/${c.slug}`}

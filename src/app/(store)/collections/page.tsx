@@ -16,10 +16,10 @@ export default async function CollectionsPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-8 py-12" style={{ minHeight: "70vh" }}>
       <div className="mb-10">
         <h1 className="font-display font-bold" style={{ fontSize: "clamp(2rem,5vw,3.5rem)", color: "var(--fg)" }}>
-          الكولكشنات
+          البكجات
         </h1>
         <p className="mt-2 text-base" style={{ color: "var(--fg-muted)" }}>
-          باقات منتجات مختارة بعناية — وفّر أكثر مع الكولكشن
+          باقات منتجات مختارة بعناية — وفّر أكثر مع الباقة
         </p>
       </div>
 
@@ -71,10 +71,23 @@ export default async function CollectionsPage() {
 
                 <div className="flex items-end justify-between mt-2">
                   <div>
-                    <p className="text-xs font-bold mb-1" style={{ color: "var(--fg-muted)" }}>سعر الكولكشن</p>
-                    <p className="font-display font-bold" style={{ fontSize: "clamp(1.4rem,3vw,2rem)", color: "var(--fg)" }}>
-                      {formatIQD(col.price)}
-                    </p>
+                    <p className="text-xs font-bold mb-1" style={{ color: "var(--fg-muted)" }}>سعر الباقة</p>
+                    <div className="flex items-baseline gap-2">
+                      {col.discountedPrice ? (
+                        <>
+                          <p className="font-display font-bold" style={{ fontSize: "clamp(1.4rem,3vw,2rem)", color: "var(--accent)" }}>
+                            {formatIQD(col.discountedPrice)}
+                          </p>
+                          <p className="text-sm line-through" style={{ color: "var(--fg-muted)" }}>
+                            {formatIQD(col.price)}
+                          </p>
+                        </>
+                      ) : (
+                        <p className="font-display font-bold" style={{ fontSize: "clamp(1.4rem,3vw,2rem)", color: "var(--fg)" }}>
+                          {formatIQD(col.price)}
+                        </p>
+                      )}
+                    </div>
                   </div>
                   <CollectionAddButton collection={{
                     id: col.id,

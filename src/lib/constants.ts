@@ -2,6 +2,7 @@ export const CATEGORIES = [
   { slug: "soap", value: "SOAP", label: "الصابون" },
   { slug: "shampoo", value: "SHAMPOO", label: "الشامبو" },
   { slug: "oil", value: "OIL", label: "الزيوت الطبيعية" },
+  { slug: "cleaner", value: "CLEANER", label: "منظفات منزلية" },
 ] as const;
 
 export type CategoryValue = (typeof CATEGORIES)[number]["value"];
@@ -53,3 +54,6 @@ export function statusLabel(value: string) {
 export function formatIQD(amount: number) {
   return `${amount.toLocaleString("ar-IQ")} د.ع`;
 }
+
+export const DELIVERY_FREE = 0;
+export const DELIVERY_PAID = 5000;

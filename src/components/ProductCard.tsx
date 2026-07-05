@@ -10,15 +10,18 @@ import type { Product } from "@/types";
 export default function ProductCard({ product }: { product: Product }) {
   const addItem = useCartStore((s) => s.addItem);
 
+  const isSoldOut = product.soldOut || product.stock <= 0;
+
   function handleAdd(e: React.MouseEvent) {
     e.preventDefault();
-    if (product.stock <= 0) return;
+    if (isSoldOut) return;
     addItem({
       productId: product.id,
       title: product.title,
       price: product.price,
       imageUrl: product.imageUrl,
       stock: product.stock,
+      deliveryFee: product.deliveryFee ?? 0,
     });
     toast.success("تمت إضافة المنتج إلى السلة ✓");
   }
@@ -37,9 +40,9 @@ export default function ProductCard({ product }: { product: Product }) {
           className="object-cover transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 640px) 50vw, 25vw"
         />
-        {product.stock <= 0 && (
+        {isSoldOut && (
           <div className="absolute inset-0 flex items-center justify-center" style={{ background: "rgba(0,0,0,0.35)" }}>
-            <span className="text-white text-xs font-bold px-3 py-1 rounded-full" style={{ background: "rgba(0,0,0,0.6)" }}>غير متوفر</span>
+            <span className="text-white text-xs font-bold px-3 py-1" style={{ background: "rgba(0,0,0,0.6)" }}>نفد المخزون</span>
           </div>
         )}
       </div>
@@ -59,11 +62,11 @@ export default function ProductCard({ product }: { product: Product }) {
           </span>
           <button
             onClick={handleAdd}
-            disabled={product.stock <= 0}
+            disabled={isSoldOut}
             className="btn-primary text-xs px-3 py-2 rounded-lg"
             style={{ fontSize: "12px", padding: "8px 14px" }}
           >
-            أضف للسلة
+            {isSoldOut ? "نفد" : "أضف للسلة"}
           </button>
         </div>
       </div>

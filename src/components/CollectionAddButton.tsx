@@ -43,6 +43,7 @@ export default function CollectionAddButton({ collection }: Props) {
           price: item.product.price,
           imageUrl: item.product.imageUrl,
           stock: item.product.stock,
+          deliveryFee: 0,
         },
         item.quantity
       );

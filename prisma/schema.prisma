@@ -8,21 +8,26 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-// Category values: "SOAP" | "SHAMPOO" | "OIL"
+// Category values: "SOAP" | "SHAMPOO" | "OIL" | "CLEANER"
 // OrderStatus values: "PENDING" | "SHIPPED" | "DELIVERED" | "CANCELED"
 
 model Product {
-  id          String      @id @default(cuid())
-  title       String
-  description String
-  price       Int
-  category    String
-  stock       Int         @default(0)
-  imageUrl    String
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  orderItems       OrderItem[]
-  collectionItems  CollectionItem[]
+  id              String           @id @default(cuid())
+  title           String
+  description     String
+  price           Int
+  category        String
+  stock           Int              @default(0)
+  imageUrl        String
+  images          String[]         @default([])  // additional photos
+  deliveryFee     Int              @default(0)   // 0 = free, 5000 = paid
+  featured        Boolean          @default(false)
+  soldOut         Boolean          @default(false)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  orderItems      OrderItem[]
+  collectionItems CollectionItem[]
+  reviews         Review[]
 }
 
 model Order {
@@ -55,31 +60,44 @@ model Admin {
   password String
 }
 
-// key/value store for editable site content
 model SiteContent {
   key       String   @id
   value     String
   updatedAt DateTime @updatedAt
 }
 
-// Product bundles / collections (e.g. "hair loss pack")
+// بكجات (formerly collections)
 model Collection {
-  id          String           @id @default(cuid())
-  title       String
-  description String
-  imageUrl    String           @default("")
-  price       Int
-  active      Boolean          @default(true)
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
-  items       CollectionItem[]
+  id              String           @id @default(cuid())
+  title           String
+  description     String
+  imageUrl        String           @default("")
+  price           Int
+  discountedPrice Int?             // sale price for whole package
+  active          Boolean          @default(true)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  items           CollectionItem[]
 }
 
 model CollectionItem {
-  id           String     @id @default(cuid())
-  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
-  collectionId String
-  product      Product    @relation(fields: [productId], references: [id])
-  productId    String
-  quantity     Int        @default(1)
+  id              String     @id @default(cuid())
+  collection      Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  collectionId    String
+  product         Product    @relation(fields: [productId], references: [id])
+  productId       String
+  quantity        Int        @default(1)
+  discountedPrice Int?       // discounted unit price inside this package
+}
+
+model Review {
+  id          String   @id @default(cuid())
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name        String
+  governorate String
+  comment     String
+  rating      Int      // 1-5
+  approved    Boolean  @default(false)
+  createdAt   DateTime @default(now())
 }

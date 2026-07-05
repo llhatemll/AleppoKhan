@@ -35,6 +35,7 @@ export default function CollectionForm({ products, initial }: Props) {
   const [description, setDescription] = useState(initial?.description ?? "");
   const [imageUrl, setImageUrl] = useState(initial?.imageUrl ?? "");
   const [price, setPrice] = useState(initial?.price?.toString() ?? "");
+  const [discountedPrice, setDiscountedPrice] = useState((initial as { discountedPrice?: number | null } | undefined)?.discountedPrice?.toString() ?? "");
   const [active, setActive] = useState(initial?.active ?? true);
   const [items, setItems] = useState<{ productId: string; quantity: number; product: Product }[]>(
     initial?.items ?? []
@@ -83,7 +84,9 @@ export default function CollectionForm({ products, initial }: Props) {
       method,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        title, description, imageUrl, price: Number(price), active,
+        title, description, imageUrl, price: Number(price),
+        discountedPrice: discountedPrice ? Number(discountedPrice) : null,
+        active,
         items: items.map((i) => ({ productId: i.productId, quantity: i.quantity })),
       }),
     });
@@ -128,13 +131,19 @@ export default function CollectionForm({ products, initial }: Props) {
             style={{ background: "var(--bg)", border: "1px solid var(--border)", color: "var(--fg)", fontFamily: "inherit", resize: "vertical" }} />
         </div>
 
-        <div className="flex flex-col gap-1.5">
-          <label className="font-bold text-sm" style={{ color: "var(--fg)" }}>السعر الإجمالي (د.ع) *</label>
-          <input value={price} onChange={(e) => setPrice(e.target.value)} required type="number" min="1"
-            placeholder="مثال: 45000"
-            className="w-full px-4 py-3 text-sm"
-            dir="ltr"
-            style={{ background: "var(--bg)", border: "1px solid var(--border)", color: "var(--fg)", fontFamily: "inherit" }} />
+        <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col gap-1.5">
+            <label className="font-bold text-sm" style={{ color: "var(--fg)" }}>السعر الأصلي (د.ع) *</label>
+            <input value={price} onChange={(e) => setPrice(e.target.value)} required type="number" min="1"
+              placeholder="مثال: 45000" className="w-full px-4 py-3 text-sm" dir="ltr"
+              style={{ background: "var(--bg)", border: "1px solid var(--border)", color: "var(--fg)", fontFamily: "inherit" }} />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className="font-bold text-sm" style={{ color: "var(--fg)" }}>سعر الخصم (اختياري)</label>
+            <input value={discountedPrice} onChange={(e) => setDiscountedPrice(e.target.value)} type="number" min="1"
+              placeholder="مثال: 38000" className="w-full px-4 py-3 text-sm" dir="ltr"
+              style={{ background: "var(--bg)", border: "1px solid var(--border)", color: "var(--fg)", fontFamily: "inherit" }} />
+          </div>
         </div>
 
         {/* Image upload */}

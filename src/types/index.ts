@@ -6,6 +6,10 @@ export type Product = {
   category: string;
   stock: number;
   imageUrl: string;
+  images: string[];
+  deliveryFee: number;
+  featured: boolean;
+  soldOut: boolean;
   createdAt: string | Date;
   updatedAt: string | Date;
 };
@@ -17,6 +21,7 @@ export type CartItem = {
   imageUrl: string;
   quantity: number;
   stock: number;
+  deliveryFee: number;
 };
 
 export type OrderItemInput = {

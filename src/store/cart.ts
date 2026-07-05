@@ -13,6 +13,8 @@ type CartState = {
   clearCart: () => void;
   totalItems: () => number;
   totalPrice: () => number;
+  totalDelivery: () => number;
+  grandTotal: () => number;
 };
 
 export const useCartStore = create<CartState>()(
@@ -27,15 +29,9 @@ export const useCartStore = create<CartState>()(
           const existing = state.items.find((i) => i.productId === item.productId);
           if (existing) {
             const nextQty = Math.min(existing.quantity + quantity, existing.stock);
-            return {
-              items: state.items.map((i) =>
-                i.productId === item.productId ? { ...i, quantity: nextQty } : i
-              ),
-            };
+            return { items: state.items.map((i) => i.productId === item.productId ? { ...i, quantity: nextQty } : i) };
           }
-          return {
-            items: [...state.items, { ...item, quantity: Math.min(quantity, item.stock) }],
-          };
+          return { items: [...state.items, { ...item, quantity: Math.min(quantity, item.stock) }] };
         });
       },
       removeItem: (productId) =>
@@ -43,16 +39,18 @@ export const useCartStore = create<CartState>()(
       updateQuantity: (productId, quantity) =>
         set((state) => ({
           items: state.items
-            .map((i) =>
-              i.productId === productId
-                ? { ...i, quantity: Math.max(1, Math.min(quantity, i.stock)) }
-                : i
-            )
+            .map((i) => i.productId === productId ? { ...i, quantity: Math.max(1, Math.min(quantity, i.stock)) } : i)
             .filter((i) => i.quantity > 0),
         })),
       clearCart: () => set({ items: [] }),
       totalItems: () => get().items.reduce((sum, i) => sum + i.quantity, 0),
       totalPrice: () => get().items.reduce((sum, i) => sum + i.quantity * i.price, 0),
+      // delivery: charged once per unique product that has a delivery fee
+      totalDelivery: () => {
+        const fees = get().items.filter((i) => (i.deliveryFee ?? 0) > 0);
+        return fees.length > 0 ? fees[0].deliveryFee : 0;
+      },
+      grandTotal: () => get().totalPrice() + get().totalDelivery(),
     }),
     { name: "aleppo-khan-cart" }
   )

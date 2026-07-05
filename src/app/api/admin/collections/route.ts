@@ -14,9 +14,9 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   if (!requireAdmin(req)) return NextResponse.json({ error: "غير مصرح" }, { status: 401 });
   const body = await req.json();
-  const { title, description, imageUrl, price, active, items } = body as {
+  const { title, description, imageUrl, price, discountedPrice, active, items } = body as {
     title: string; description: string; imageUrl: string;
-    price: number; active: boolean;
+    price: number; discountedPrice?: number | null; active: boolean;
     items: { productId: string; quantity: number }[];
   };
 
@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
       description: description?.trim() ?? "",
       imageUrl: imageUrl ?? "",
       price,
+      discountedPrice: discountedPrice ?? null,
       active: active ?? true,
       items: {
         create: (items ?? []).map((i) => ({

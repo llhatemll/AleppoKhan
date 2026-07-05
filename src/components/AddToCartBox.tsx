@@ -13,7 +13,7 @@ export default function AddToCartBox({ product }: { product: Product }) {
   function handleAdd() {
     if (product.stock <= 0) return;
     addItem(
-      { productId: product.id, title: product.title, price: product.price, imageUrl: product.imageUrl, stock: product.stock },
+      { productId: product.id, title: product.title, price: product.price, imageUrl: product.imageUrl, stock: product.stock, deliveryFee: product.deliveryFee ?? 0 },
       qty
     );
     toast.success("تمت إضافة المنتج إلى السلة ✓");

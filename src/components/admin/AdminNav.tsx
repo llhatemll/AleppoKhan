@@ -7,8 +7,9 @@ const links = [
   { href: "/admin", label: "نظرة عامة" },
   { href: "/admin/content", label: "محتوى الموقع" },
   { href: "/admin/products", label: "المنتجات" },
-  { href: "/admin/collections", label: "الكولكشنات" },
+  { href: "/admin/collections", label: "البكجات" },
   { href: "/admin/orders", label: "الطلبات" },
+  { href: "/admin/reviews", label: "التقييمات" },
 ];
 
 export default function AdminNav({ username }: { username: string }) {
@@ -22,12 +23,12 @@ export default function AdminNav({ username }: { username: string }) {
   }
 
   return (
-    <aside className="w-56 shrink-0 border-l border-ink hidden sm:flex flex-col">
-      <div className="p-5 border-b border-ink">
-        <h2 className="font-display font-extrabold text-lg">
-          خان <span className="text-clay">حلب</span>
+    <aside className="w-56 shrink-0 hidden sm:flex flex-col" style={{ borderLeft: "1px solid var(--border)" }}>
+      <div className="p-5" style={{ borderBottom: "1px solid var(--border)" }}>
+        <h2 className="font-display font-extrabold text-lg" style={{ color: "var(--fg)" }}>
+          خان <span style={{ color: "var(--accent)" }}>حلب</span>
         </h2>
-        <p className="text-xs text-ink/50 mt-1">{username}</p>
+        <p className="text-xs mt-1" style={{ color: "var(--fg-muted)" }}>{username}</p>
       </div>
       <nav className="flex flex-col p-3 gap-1 flex-1">
         {links.map((l) => {
@@ -36,9 +37,11 @@ export default function AdminNav({ username }: { username: string }) {
             <Link
               key={l.href}
               href={l.href}
-              className={`px-4 py-3 font-bold text-sm ${
-                active ? "bg-ink text-paper" : "hover:bg-ink/5"
-              }`}
+              className="px-4 py-3 font-bold text-sm transition-colors"
+              style={{
+                background: active ? "var(--fg)" : "transparent",
+                color: active ? "var(--bg)" : "var(--fg)",
+              }}
             >
               {l.label}
             </Link>
@@ -47,7 +50,8 @@ export default function AdminNav({ username }: { username: string }) {
       </nav>
       <button
         onClick={handleLogout}
-        className="m-3 px-4 py-3 font-bold text-sm border border-ink hover:bg-clay hover:text-paper transition-colors"
+        className="m-3 px-4 py-3 font-bold text-sm transition-colors hover:opacity-70"
+        style={{ border: "1px solid var(--border)", color: "var(--fg)" }}
       >
         تسجيل الخروج
       </button>

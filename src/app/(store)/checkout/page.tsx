@@ -19,7 +19,7 @@ type FormState = {
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { items, totalPrice, clearCart } = useCartStore();
+  const { items, totalPrice, totalDelivery, grandTotal, clearCart } = useCartStore();
   const [form, setForm] = useState<FormState>({
     fullName: "",
     phone: "",
@@ -203,10 +203,21 @@ export default function CheckoutPage() {
                 </span>
               </div>
             ))}
-            <div className="flex justify-between font-bold text-lg pt-3"
-              style={{ borderTop: "1px solid var(--border)", color: "var(--fg)" }}>
-              <span>الإجمالي</span>
-              <span style={{ color: "var(--accent2)" }}>{formatIQD(totalPrice())}</span>
+            <div className="pt-3 flex flex-col gap-2" style={{ borderTop: "1px solid var(--border)" }}>
+              <div className="flex justify-between text-sm" style={{ color: "var(--fg-muted)" }}>
+                <span>المجموع الفرعي</span>
+                <span>{formatIQD(totalPrice())}</span>
+              </div>
+              {totalDelivery() > 0 && (
+                <div className="flex justify-between text-sm" style={{ color: "var(--fg-muted)" }}>
+                  <span>رسوم التوصيل</span>
+                  <span>{formatIQD(totalDelivery())}</span>
+                </div>
+              )}
+              <div className="flex justify-between font-bold text-lg pt-2" style={{ borderTop: "1px solid var(--border)", color: "var(--fg)" }}>
+                <span>الإجمالي</span>
+                <span style={{ color: "var(--accent2)" }}>{formatIQD(grandTotal())}</span>
+              </div>
             </div>
             <p className="text-xs" style={{ color: "var(--fg-faint)" }}>الدفع نقداً عند استلام الطلب</p>
           </div>

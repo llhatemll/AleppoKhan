@@ -42,7 +42,7 @@ export default function Header() {
           <Link href="/collections"
             className="text-sm font-bold tracking-wide transition-opacity hover:opacity-50"
             style={{ color: "var(--fg)", letterSpacing: "0.05em" }}>
-            الكولكشنات
+            البكجات
           </Link>
         </nav>
 
@@ -117,7 +117,7 @@ export default function Header() {
           <Link href="/collections" onClick={() => setMenuOpen(false)}
             className="py-4 font-bold text-base tracking-wide border-b"
             style={{ color: "var(--fg)", borderColor: "var(--border)" }}>
-            الكولكشنات
+            البكجات
           </Link>
         </nav>
       </div>
