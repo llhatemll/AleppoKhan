@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    total += product.price * item.quantity;
+    total += product.price * item.quantity + (product.deliveryFee ?? 0);
     orderItemsData.push({
       productId: product.id,
       quantity: item.quantity,

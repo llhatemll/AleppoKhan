@@ -45,11 +45,9 @@ export const useCartStore = create<CartState>()(
       clearCart: () => set({ items: [] }),
       totalItems: () => get().items.reduce((sum, i) => sum + i.quantity, 0),
       totalPrice: () => get().items.reduce((sum, i) => sum + i.quantity * i.price, 0),
-      // delivery: charged once per unique product that has a delivery fee
-      totalDelivery: () => {
-        const fees = get().items.filter((i) => (i.deliveryFee ?? 0) > 0);
-        return fees.length > 0 ? fees[0].deliveryFee : 0;
-      },
+      // delivery: one fee per unique product that has a delivery fee
+      totalDelivery: () =>
+        get().items.reduce((sum, i) => sum + ((i.deliveryFee ?? 0) > 0 ? i.deliveryFee : 0), 0),
       grandTotal: () => get().totalPrice() + get().totalDelivery(),
     }),
     { name: "aleppo-khan-cart" }
