@@ -95,6 +95,7 @@ export async function POST(req: NextRequest) {
     address: order.address,
     notes: order.notes,
     total: order.total,
+    deliveryFee: hasDeliveryFee ? 5000 : 0,
     items: orderItemsData.map((i) => ({
       title: products.find((p) => p.id === i.productId)?.title ?? i.productId,
       quantity: i.quantity,

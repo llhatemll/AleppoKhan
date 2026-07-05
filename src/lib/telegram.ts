@@ -14,6 +14,7 @@ interface OrderNotificationData {
   address: string;
   notes?: string | null;
   total: number;
+  deliveryFee: number;
   items: OrderItem[];
 }
 
@@ -25,6 +26,8 @@ export async function sendOrderNotification(order: OrderNotificationData) {
 
   const orderNum = order.id.slice(-8).toUpperCase();
   const siteUrl = "https://www.aleppokhan.com";
+
+  const subtotal = order.total - order.deliveryFee;
 
   const itemLines = order.items.map(
     (item) => `  • ${item.title} × ${item.quantity} — ${formatIQD(item.price * item.quantity)}`
@@ -42,7 +45,11 @@ export async function sendOrderNotification(order: OrderNotificationData) {
     `📦 *المنتجات:*`,
     ...itemLines,
     ``,
-    `💰 *الإجمالي:* ${formatIQD(order.total)}`,
+    `🧾 *المجموع الفرعي:* ${formatIQD(subtotal)}`,
+    order.deliveryFee > 0
+      ? `🚚 *رسوم التوصيل:* ${formatIQD(order.deliveryFee)}`
+      : `🚚 *التوصيل:* مجاني`,
+    `💰 *الإجمالي الكلي:* ${formatIQD(order.total)}`,
     ``,
     `🔗 [فتح الطلب في لوحة التحكم](${siteUrl}/admin/orders/${order.id})`,
   ]
