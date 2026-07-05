@@ -7,11 +7,9 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
-    ],
-    // allow locally uploaded images from /public/uploads
-    localPatterns: [
       {
-        pathname: "/uploads/**",
+        protocol: "https",
+        hostname: "*.public.blob.vercel-storage.com",
       },
     ],
   },
