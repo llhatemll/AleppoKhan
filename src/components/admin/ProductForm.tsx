@@ -22,12 +22,18 @@ type FormData = {
 };
 
 async function uploadFile(file: File): Promise<string | null> {
-  const fd = new FormData();
-  fd.append("file", file);
-  const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
-  const data = await res.json();
-  if (!res.ok) { toast.error(data.error || "فشل رفع الصورة"); return null; }
-  return data.url as string;
+  try {
+    const fd = new FormData();
+    fd.append("file", file);
+    const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+    let data: { url?: string; error?: string } = {};
+    try { data = await res.json(); } catch { /* non-JSON body */ }
+    if (!res.ok) { toast.error(data.error || "فشل رفع الصورة — تأكد من إعداد Cloudinary"); return null; }
+    return data.url ?? null;
+  } catch {
+    toast.error("فشل الاتصال بالسيرفر أثناء رفع الصورة");
+    return null;
+  }
 }
 
 export default function ProductForm({ product }: { product?: Product }) {
@@ -52,24 +58,33 @@ export default function ProductForm({ product }: { product?: Product }) {
   const [saving, setSaving] = useState(false);
 
   async function handleMainImage(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]; if (!file) return;
+    const file = e.target.files?.[0];
+    if (mainFileRef.current) mainFileRef.current.value = "";
+    if (!file) return;
     setUploading(true);
-    const url = await uploadFile(file);
-    setUploading(false);
-    if (url) { setForm((p) => ({ ...p, imageUrl: url })); toast.success("تم رفع الصورة الرئيسية ✓"); }
+    try {
+      const url = await uploadFile(file);
+      if (url) { setForm((p) => ({ ...p, imageUrl: url })); toast.success("تم رفع الصورة الرئيسية ✓"); }
+    } finally {
+      setUploading(false);
+    }
   }
 
   async function handleExtraImage(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? []);
+    if (extraFileRef.current) extraFileRef.current.value = "";
     if (!files.length) return;
     setUploadingExtra(true);
-    const urls: string[] = [];
-    for (const file of files) {
-      const url = await uploadFile(file);
-      if (url) urls.push(url);
+    try {
+      const urls: string[] = [];
+      for (const file of files) {
+        const url = await uploadFile(file);
+        if (url) urls.push(url);
+      }
+      if (urls.length) { setForm((p) => ({ ...p, images: [...p.images, ...urls] })); toast.success(`تم رفع ${urls.length} صورة ✓`); }
+    } finally {
+      setUploadingExtra(false);
     }
-    setUploadingExtra(false);
-    if (urls.length) { setForm((p) => ({ ...p, images: [...p.images, ...urls] })); toast.success(`تم رفع ${urls.length} صورة ✓`); }
   }
 
   function removeExtraImage(idx: number) {

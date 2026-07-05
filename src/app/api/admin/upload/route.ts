@@ -14,6 +14,13 @@ const MAX_SIZE = 10 * 1024 * 1024; // 10 MB
 export async function POST(req: NextRequest) {
   if (!requireAdmin(req)) return NextResponse.json({ error: "غير مصرح" }, { status: 401 });
 
+  if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+    return NextResponse.json(
+      { error: "رفع الصور غير مُفعَّل بعد — أضف Cloudinary credentials في Vercel ثم أعد النشر" },
+      { status: 503 }
+    );
+  }
+
   const formData = await req.formData();
   const file = formData.get("file") as File | null;
 
@@ -26,12 +33,16 @@ export async function POST(req: NextRequest) {
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
 
-  const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
-    cloudinary.uploader.upload_stream(
-      { folder: "aleppo-khan", resource_type: "image" },
-      (err, res) => { if (err || !res) reject(err ?? new Error("upload failed")); else resolve(res); }
-    ).end(buffer);
-  });
-
-  return NextResponse.json({ url: result.secure_url });
+  try {
+    const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
+      cloudinary.uploader.upload_stream(
+        { folder: "aleppo-khan", resource_type: "image" },
+        (err, res) => { if (err || !res) reject(err ?? new Error("upload failed")); else resolve(res); }
+      ).end(buffer);
+    });
+    return NextResponse.json({ url: result.secure_url });
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : "خطأ غير معروف";
+    return NextResponse.json({ error: `فشل رفع الصورة: ${msg}` }, { status: 500 });
+  }
 }
