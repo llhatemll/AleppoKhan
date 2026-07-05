@@ -15,7 +15,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   return (
     <div dir="rtl" className="min-h-screen flex bg-paper text-ink font-sans">
       <AdminNav username={payload.username} />
-      <main className="flex-1 min-w-0 p-4 sm:p-8">{children}</main>
+      <main className="flex-1 min-w-0 p-4 pt-18 sm:pt-8 sm:p-8">{children}</main>
     </div>
   );
 }
