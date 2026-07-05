@@ -35,8 +35,9 @@ export async function POST(req: NextRequest) {
   const productIds = items.map((i) => i.productId);
   const products = await prisma.product.findMany({ where: { id: { in: productIds } } });
 
-  let total = 0;
+  let subtotal = 0;
   const orderItemsData: { productId: string; quantity: number; price: number }[] = [];
+  let hasDeliveryFee = false;
 
   for (const item of items) {
     const product = products.find((p) => p.id === item.productId);
@@ -49,13 +50,17 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    total += product.price * item.quantity + (product.deliveryFee ?? 0);
+    subtotal += product.price * item.quantity;
+    if ((product.deliveryFee ?? 0) > 0) hasDeliveryFee = true;
     orderItemsData.push({
       productId: product.id,
       quantity: item.quantity,
       price: product.price,
     });
   }
+
+  // flat 5000 IQD delivery fee per order if any item requires delivery
+  const total = subtotal + (hasDeliveryFee ? 5000 : 0);
 
   const order = await prisma.$transaction(async (tx) => {
     const created = await tx.order.create({

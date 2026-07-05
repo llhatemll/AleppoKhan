@@ -45,9 +45,9 @@ export const useCartStore = create<CartState>()(
       clearCart: () => set({ items: [] }),
       totalItems: () => get().items.reduce((sum, i) => sum + i.quantity, 0),
       totalPrice: () => get().items.reduce((sum, i) => sum + i.quantity * i.price, 0),
-      // delivery: one fee per unique product that has a delivery fee
+      // delivery: flat 5000 IQD per order if ANY item has a delivery fee
       totalDelivery: () =>
-        get().items.reduce((sum, i) => sum + ((i.deliveryFee ?? 0) > 0 ? i.deliveryFee : 0), 0),
+        get().items.some((i) => (i.deliveryFee ?? 0) > 0) ? 5000 : 0,
       grandTotal: () => get().totalPrice() + get().totalDelivery(),
     }),
     { name: "aleppo-khan-cart" }
