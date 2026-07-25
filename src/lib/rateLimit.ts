@@ -5,14 +5,6 @@ interface RateLimitEntry {
 
 const store = new Map<string, RateLimitEntry>();
 
-// Clean up expired entries periodically to avoid memory growth
-setInterval(() => {
-  const now = Date.now();
-  for (const [key, entry] of store) {
-    if (entry.resetAt < now) store.delete(key);
-  }
-}, 60_000);
-
 /**
  * Returns true if the request is allowed, false if rate-limited.
  * @param key      Unique key (e.g. "login:1.2.3.4")
