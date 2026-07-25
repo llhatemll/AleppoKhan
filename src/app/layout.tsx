@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast";
 export const metadata: Metadata = {
   title: "خان حلب | منتجات طبيعية فاخرة",
   description: "صابون وشامبو وزيوت طبيعية فاخرة. الدفع عند الاستلام في جميع محافظات العراق.",
+  icons: { icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

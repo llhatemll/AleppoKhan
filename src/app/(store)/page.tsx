@@ -124,13 +124,13 @@ export default async function HomePage() {
       <section className="py-10" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-8 grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
           {[
-            ["مكونات طبيعية ١٠٠٪"],
-            ["توصيل لجميع المحافظات"],
-            ["الدفع عند الاستلام"],
-            ["ضمان جودة المنتج"],
-          ].map(([label]) => (
+            { label: "مكونات طبيعية ١٠٠٪", icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 22c0 0-8-4-8-12 4 0 8 2 8 2s4-2 8-2c0 8-8 12-8 12z"/><path d="M12 22V10"/></svg> },
+            { label: "توصيل لجميع المحافظات", icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v4h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg> },
+            { label: "الدفع عند الاستلام", icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg> },
+            { label: "ضمان جودة المنتج", icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> },
+          ].map(({ label, icon }) => (
             <div key={label} className="flex flex-col items-center gap-3">
-              <div style={{ width: "32px", height: "1px", background: "var(--fg)" }} />
+              <div style={{ color: "var(--fg)", opacity: 0.8 }}>{icon}</div>
               <span className="text-xs font-bold" style={{ color: "var(--fg)", letterSpacing: "0.12em" }}>{label}</span>
             </div>
           ))}
