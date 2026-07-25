@@ -26,7 +26,7 @@ export default async function CollectionsPage() {
       {collections.length === 0 ? (
         <div className="py-24 text-center">
           <span className="text-5xl mb-4 block">📦</span>
-          <p style={{ color: "var(--fg-muted)" }}>لا توجد كولكشنات متاحة حالياً</p>
+          <p style={{ color: "var(--fg-muted)" }}>لا توجد بكجات متاحة حالياً</p>
         </div>
       ) : (
         <div className="flex flex-col gap-12">

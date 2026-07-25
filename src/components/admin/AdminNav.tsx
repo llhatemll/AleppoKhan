@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import NotificationBell from "./NotificationBell";
 
 const links = [
   { href: "/admin", label: "نظرة عامة", icon: "◈" },
@@ -31,9 +32,12 @@ export default function AdminNav({ username }: { username: string }) {
       {/* ── Desktop sidebar ── */}
       <aside className="w-56 shrink-0 hidden sm:flex flex-col" style={{ borderLeft: "1px solid var(--border)" }}>
         <div className="p-5" style={{ borderBottom: "1px solid var(--border)" }}>
-          <h2 className="font-display font-extrabold text-lg" style={{ color: "var(--fg)" }}>
-            خان <span style={{ color: "var(--accent)" }}>حلب</span>
-          </h2>
+          <div className="flex items-center justify-between">
+            <h2 className="font-display font-extrabold text-lg" style={{ color: "var(--fg)" }}>
+              خان <span style={{ color: "var(--accent)" }}>حلب</span>
+            </h2>
+            <NotificationBell />
+          </div>
           <p className="text-xs mt-1" style={{ color: "var(--fg-muted)" }}>{username}</p>
         </div>
         <nav className="flex flex-col p-3 gap-1 flex-1">
@@ -60,7 +64,8 @@ export default function AdminNav({ username }: { username: string }) {
       <div className="sm:hidden fixed top-0 right-0 left-0 z-50 flex items-center justify-between px-4 h-14"
         style={{ background: "var(--bg-card)", borderBottom: "1px solid var(--border)" }}>
         <span className="font-bold text-sm" style={{ color: "var(--fg)" }}>{currentLabel}</span>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-2">
+          <NotificationBell />
           <span className="font-display font-extrabold text-base" style={{ color: "var(--fg)" }}>
             خان <span style={{ color: "var(--accent)" }}>حلب</span>
           </span>

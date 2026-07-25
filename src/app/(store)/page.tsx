@@ -74,6 +74,10 @@ export default async function HomePage() {
 
       {/* ─── CATEGORY BANNERS ─── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-8 py-12 sm:py-16">
+        <h2 className="text-center text-xs font-bold mb-8 sm:mb-10"
+          style={{ letterSpacing: "0.22em", color: "var(--fg)" }}>
+          تسوق حسب القسم
+        </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {CATEGORIES.filter((c) => catImages[c.value]).map((c) => {
             const img = catImages[c.value];
@@ -102,12 +106,12 @@ export default async function HomePage() {
 
       {/* ─── FEATURED PRODUCTS ─── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-8 pb-16 sm:pb-24">
-        <div className="flex items-end justify-between mb-8">
-          <h2 className="font-display font-bold" style={{ fontSize: "clamp(1.6rem,3vw,2.4rem)", color: "var(--fg)" }}>
+        <div className="flex items-center justify-between mb-8 sm:mb-10">
+          <h2 className="text-xs font-bold" style={{ letterSpacing: "0.22em", color: "var(--fg)" }}>
             {content.section_title}
           </h2>
-          <Link href="/category/soap" className="text-sm font-bold tracking-wide hover:opacity-50 transition-opacity"
-            style={{ color: "var(--fg)" }}>
+          <Link href="/products" className="text-xs font-bold hover:opacity-40 transition-opacity"
+            style={{ color: "var(--fg)", letterSpacing: "0.14em" }}>
             عرض الكل ←
           </Link>
         </div>
@@ -120,14 +124,14 @@ export default async function HomePage() {
       <section className="py-10" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-8 grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
           {[
-            ["🌿", "مكونات طبيعية ١٠٠٪"],
-            ["🚚", "توصيل لجميع المحافظات"],
-            ["💵", "الدفع عند الاستلام"],
-            ["✅", "ضمان جودة المنتج"],
-          ].map(([icon, label]) => (
-            <div key={label} className="flex flex-col items-center gap-2">
-              <span className="text-2xl">{icon}</span>
-              <span className="text-xs font-bold tracking-wide" style={{ color: "var(--fg-muted)" }}>{label}</span>
+            ["مكونات طبيعية ١٠٠٪"],
+            ["توصيل لجميع المحافظات"],
+            ["الدفع عند الاستلام"],
+            ["ضمان جودة المنتج"],
+          ].map(([label]) => (
+            <div key={label} className="flex flex-col items-center gap-3">
+              <div style={{ width: "32px", height: "1px", background: "var(--fg)" }} />
+              <span className="text-xs font-bold" style={{ color: "var(--fg)", letterSpacing: "0.12em" }}>{label}</span>
             </div>
           ))}
         </div>

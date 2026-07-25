@@ -55,20 +55,20 @@
 
 /* ─── Light mode ─── */
 :root {
-  --bg:         #F9F7F4;
+  --bg:         #FAFAFA;
   --bg-card:    #FFFFFF;
-  --bg-cream:   #F2EDE5;
-  --bg-nav:     rgba(249,247,244,0.94);
-  --fg:         #0D0D0D;
-  --fg-muted:   #6B6B6B;
-  --fg-faint:   #B8B8B8;
-  --accent:     #0D0D0D;
+  --bg-cream:   #F5F5F5;
+  --bg-nav:     rgba(250,250,250,0.96);
+  --fg:         #0A0A0A;
+  --fg-muted:   #555555;
+  --fg-faint:   #AAAAAA;
+  --accent:     #0A0A0A;
   --accent-fg:  #FFFFFF;
-  --accent2:    #C1502E;
-  --border:     #E8E4DE;
-  --shadow-sm:  0 1px 4px rgba(0,0,0,0.06);
-  --shadow-md:  0 4px 24px rgba(0,0,0,0.08);
-  --shadow-lg:  0 12px 48px rgba(0,0,0,0.12);
+  --accent2:    #0A0A0A;
+  --border:     #E5E5E5;
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md:  0 4px 20px rgba(0,0,0,0.07);
+  --shadow-lg:  0 12px 40px rgba(0,0,0,0.10);
 }
 
 /* ─── Dark mode ─── */
@@ -112,7 +112,7 @@ html, body {
 .font-display { font-family: 'ThmanyahSerif', serif; }
 .font-sans    { font-family: 'ThmanyahSans', 'Cairo', sans-serif; }
 
-/* ─── Primary button — sharp rectangle, fashion style ─── */
+/* ─── Primary button — sharp rectangle, Kylie-style ─── */
 .btn-primary {
   display: inline-flex;
   align-items: center;
@@ -122,16 +122,17 @@ html, body {
   color: var(--accent-fg);
   font-family: 'ThmanyahSans', sans-serif;
   font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.06em;
-  padding: 14px 32px;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  padding: 14px 36px;
   border: none;
+  border-radius: 0;
   cursor: pointer;
-  transition: opacity 0.15s ease, transform 0.1s ease;
+  transition: opacity 0.2s ease;
 }
-.btn-primary:hover  { opacity: 0.85; transform: translateY(-1px); }
-.btn-primary:active { transform: translateY(0); }
-.btn-primary:disabled { opacity: 0.35; pointer-events: none; }
+.btn-primary:hover  { opacity: 0.75; }
+.btn-primary:active { opacity: 0.9; }
+.btn-primary:disabled { opacity: 0.3; pointer-events: none; }
 
 /* ─── Ghost button ─── */
 .btn-ghost {
@@ -143,21 +144,26 @@ html, body {
   color: var(--fg);
   font-family: 'ThmanyahSans', sans-serif;
   font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.06em;
-  padding: 13px 31px;
-  border: 1px solid var(--border);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  padding: 13px 35px;
+  border: 1px solid var(--fg);
+  border-radius: 0;
   cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition: background 0.2s ease, color 0.2s ease;
 }
-.btn-ghost:hover { background: var(--bg-cream); border-color: var(--fg-muted); }
+.btn-ghost:hover { background: var(--fg); color: var(--bg); }
 
 /* ─── Product card ─── */
 .product-card {
   background: var(--bg-card);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: box-shadow 0.2s ease;
 }
-.product-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+.product-card:hover { box-shadow: var(--shadow-md); }
+
+/* ─── Product image hover overlay ─── */
+.product-img-wrap .product-overlay {
+  opacity: 0;
+  transition: opacity 0.25s ease;
 }
+.product-img-wrap:hover .product-overlay { opacity: 1; }

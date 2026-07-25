@@ -2,8 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { signAdminToken, COOKIE_NAME } from "@/lib/auth";
+import { rateLimit, getIp } from "@/lib/rateLimit";
 
 export async function POST(req: NextRequest) {
+  // 10 attempts per 15 minutes per IP
+  if (!rateLimit(`login:${getIp(req)}`, 10, 15 * 60_000)) {
+    return NextResponse.json({ error: "محاولات كثيرة جداً، حاول بعد قليل" }, { status: 429 });
+  }
+
   const { username, password } = await req.json();
 
   if (!username || !password) {

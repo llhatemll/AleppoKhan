@@ -34,14 +34,14 @@ export default function Header() {
         <nav className="hidden md:flex items-center gap-8">
           {CATEGORIES.map((c) => (
             <Link key={c.slug} href={`/category/${c.slug}`}
-              className="text-sm font-bold tracking-wide transition-opacity hover:opacity-50"
-              style={{ color: "var(--fg)", letterSpacing: "0.05em" }}>
+              className="text-xs font-bold transition-opacity hover:opacity-40"
+              style={{ color: "var(--fg)", letterSpacing: "0.14em" }}>
               {c.label}
             </Link>
           ))}
           <Link href="/collections"
-            className="text-sm font-bold tracking-wide transition-opacity hover:opacity-50"
-            style={{ color: "var(--fg)", letterSpacing: "0.05em" }}>
+            className="text-xs font-bold transition-opacity hover:opacity-40"
+            style={{ color: "var(--fg)", letterSpacing: "0.14em" }}>
             البكجات
           </Link>
         </nav>

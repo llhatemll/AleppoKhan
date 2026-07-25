@@ -18,11 +18,11 @@ interface OrderNotificationData {
   items: OrderItem[];
 }
 
-export async function sendOrderNotification(order: OrderNotificationData) {
+export async function sendOrderNotification(order: OrderNotificationData): Promise<boolean> {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;
 
-  if (!token || !chatId) return;
+  if (!token || !chatId) return true; // not configured — not an error
 
   const orderNum = order.id.slice(-8).toUpperCase();
   const siteUrl = "https://www.aleppokhan.com";
@@ -57,12 +57,19 @@ export async function sendOrderNotification(order: OrderNotificationData) {
     .join("\n");
 
   try {
-    await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ chat_id: chatId, text, parse_mode: "Markdown" }),
     });
-  } catch {
-    // never crash the order flow due to Telegram issues
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      console.error("[Telegram] sendMessage failed:", res.status, JSON.stringify(err));
+      return false;
+    }
+    return true;
+  } catch (e) {
+    console.error("[Telegram] fetch error:", e);
+    return false;
   }
 }

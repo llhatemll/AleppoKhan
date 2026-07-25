@@ -6,7 +6,7 @@ import { useCartStore } from "@/store/cart";
 import { formatIQD } from "@/lib/constants";
 
 export default function CartDrawer() {
-  const { items, isOpen, closeCart, updateQuantity, removeItem, totalPrice } = useCartStore();
+  const { items, isOpen, closeCart, updateQuantity, removeItem, totalPrice, totalDelivery, grandTotal } = useCartStore();
 
   return (
     <>
@@ -88,10 +88,22 @@ export default function CartDrawer() {
         {/* footer */}
         {items.length > 0 && (
           <div className="p-4 flex flex-col gap-3" style={{ borderTop: "1px solid var(--border)" }}>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-1.5 text-sm" style={{ color: "var(--fg-muted)" }}>
+              <div className="flex items-center justify-between">
+                <span>المجموع الفرعي</span>
+                <span>{formatIQD(totalPrice())}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>رسوم التوصيل</span>
+                <span style={{ color: totalDelivery() > 0 ? "var(--fg)" : "var(--accent)" }}>
+                  {totalDelivery() > 0 ? formatIQD(totalDelivery()) : "مجاني"}
+                </span>
+              </div>
+            </div>
+            <div className="flex items-center justify-between" style={{ borderTop: "1px solid var(--border)", paddingTop: "10px" }}>
               <span className="font-display font-bold text-lg" style={{ color: "var(--fg)" }}>الإجمالي</span>
               <span className="font-display font-extrabold text-xl" style={{ color: "var(--accent)" }}>
-                {formatIQD(totalPrice())}
+                {formatIQD(grandTotal())}
               </span>
             </div>
             <Link
