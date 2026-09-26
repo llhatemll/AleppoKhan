@@ -20,7 +20,7 @@ interface OrderNotificationData {
 
 export async function sendOrderNotification(order: OrderNotificationData): Promise<boolean> {
   const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_CHAT_ID;
+  const chatIds = process.env.TELEGRAM_CHAT_ID?.split(",") || [];
 
   if (!token || !chatId) return true; // not configured — not an error
 
@@ -57,10 +57,11 @@ export async function sendOrderNotification(order: OrderNotificationData): Promi
     .join("\n");
 
   try {
+    for (const chatId of chatIds) {
     const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: chatId, text, parse_mode: "Markdown" }),
+      body: JSON.stringify({ chat_id: chatId.trim(), text, parse_mode: "Markdown" }),
     });
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
